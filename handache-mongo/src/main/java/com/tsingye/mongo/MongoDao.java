@@ -97,7 +97,7 @@ public class MongoDao {
     }
 
     /**
-     * This geo query works, but it has some limits. I would like I or someone could figure it.
+     * This geo query works, but it has some limits. I would like I or someone could figure out it.
      *
      * @param nearQuery the near query object, you must specify the {@link org.springframework.data.geo.Metrics}
      * @param parallel  if {@code true} then the returned stream is a parallel
@@ -105,7 +105,8 @@ public class MongoDao {
      *                  stream.
      * @param clazz     the entityType you queried
      * @param <T>       return type
-     * @return a new sequential or parallel {@code Stream}, the {@link GeoResult} has {@link org.springframework.data.geo.Distance} attribute
+     * @return a new sequential or parallel {@code Stream}, the {@link GeoResult}
+     * has {@link org.springframework.data.geo.Distance} attribute
      */
     public <T> Stream<GeoResult<T>> streamNear(NearQuery nearQuery, boolean parallel, Class<T> clazz) {
         return StreamSupport.stream(mongoTemplate.geoNear(nearQuery, clazz).spliterator(), parallel);
