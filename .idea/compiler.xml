@@ -6,11 +6,13 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="handache-common" />
         <module name="handache-mongo" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="handache" target="1.5" />
+      <module name="handache-common" target="1.8" />
       <module name="handache-mongo" target="1.8" />
     </bytecodeTargetLevel>
   </component>

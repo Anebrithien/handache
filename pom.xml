@@ -12,12 +12,18 @@
     <description>So many wheels here and there, not special this one.</description>
 
     <modules>
+        <module>handache-common</module>
         <module>handache-mongo</module>
     </modules>
 
     <dependencyManagement>
         <dependencies>
             <!-- our modules -->
+            <dependency>
+                <groupId>com.tsingye</groupId>
+                <artifactId>handache-common</artifactId>
+                <version>${project.version}</version>
+            </dependency>
             <dependency>
                 <groupId>com.tsingye</groupId>
                 <artifactId>handache-mongo</artifactId>
