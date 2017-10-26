@@ -54,7 +54,7 @@ public class ThreeTenUtils {
      */
     public static Instant toInstant(LocalDate localDate) {
         if (localDate == null) {
-            localDate = LocalDate.now();
+            throw new IllegalArgumentException("localDate should not be null!");
         }
         return toInstant(localDate.atStartOfDay());
     }
@@ -62,12 +62,12 @@ public class ThreeTenUtils {
     /**
      * 将{@link LocalDateTime} 转换成 {@link Instant}
      *
-     * @param localDateTime 若为null则使用当前日期时间
+     * @param localDateTime 日期时间，，不可为null
      * @return
      */
     public static Instant toInstant(LocalDateTime localDateTime) {
         if (localDateTime == null) {
-            localDateTime = LocalDateTime.now();
+            throw new IllegalArgumentException("localDate should not be null!");
         }
         return localDateTime.atZone(defaultZoneId()).toInstant();
     }
@@ -95,40 +95,40 @@ public class ThreeTenUtils {
     /**
      * Gets the number of seconds from the Java epoch of 1970-01-01T00:00:00Z
      *
-     * @param localDate 日期，以该日期的00:00:00.000为准，若为null则为当天
+     * @param localDate 日期，以该日期的00:00:00.000为准，不可为null
      * @return
      */
-    public static long toEpochSecondFromLD(LocalDate localDate) {
+    public static long toEpochSecond(LocalDate localDate) {
         return toInstant(localDate).getEpochSecond();
     }
 
     /**
      * Gets the number of milliseconds from the Java epoch of 1970-01-01T00:00:00Z
      *
-     * @param localDate 日期，以该日期的00:00:00.000为准，若为null则为当天
+     * @param localDate 日期，以该日期的00:00:00.000为准，不可为null
      * @return
      */
-    public static long toEpochMilliFromLD(LocalDate localDate) {
+    public static long toEpochMilli(LocalDate localDate) {
         return toInstant(localDate).toEpochMilli();
     }
 
     /**
      * Gets the number of seconds from the Java epoch of 1970-01-01T00:00:00Z
      *
-     * @param localDateTime 日期时间,若为null则是当前时间
+     * @param localDateTime 日期时间，不可为null
      * @return
      */
-    public static long toEpochSecondFromLDT(LocalDateTime localDateTime) {
+    public static long toEpochSecond(LocalDateTime localDateTime) {
         return toInstant(localDateTime).getEpochSecond();
     }
 
     /**
      * Gets the number of milliseconds from the Java epoch of 1970-01-01T00:00:00Z
      *
-     * @param localDateTime 日期时间,若为null则是当前时间
+     * @param localDateTime 日期时间，不可为null
      * @return
      */
-    public static long toEpochMilliFromLDT(LocalDateTime localDateTime) {
+    public static long toEpochMilli(LocalDateTime localDateTime) {
         return toInstant(localDateTime).toEpochMilli();
     }
 
@@ -185,9 +185,9 @@ public class ThreeTenUtils {
         LocalDateTime currentDateTime = LocalDateTime.now();
         long[] result = new long[2];
         result[0] = startPoint != null ? startPoint :
-                toEpochMilliFromLDT(currentDateTime.minusDays(defaultOffsetDays));
+                toEpochMilli(currentDateTime.minusDays(defaultOffsetDays));
         result[1] = endPoint != null ? endPoint :
-                toEpochMilliFromLDT(currentDateTime);
+                toEpochMilli(currentDateTime);
         return result;
     }
 
