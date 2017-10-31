@@ -10,6 +10,99 @@ public class MathUtils {
 
     private static final double EARTH_RADIUS = 6371e3; //地球半径，单位米
 
+    private static final String HEXES = "0123456789abcdef";
+
+    /**
+     * convert long to byte array as 4 bytes unsigned long.
+     * so the number should be less than 4294967295 and positive
+     *
+     * @param unsignedLong [0, 4294967295]
+     * @return 4 Bytes length array
+     */
+    public static byte[] toByteArray(long unsignedLong) {
+        if (unsignedLong < 0 || unsignedLong > 0xFFFFFFFFL) {
+            throw new IllegalArgumentException("the number " + unsignedLong + "is NOT in range [0, 4294967295]");
+        }
+        byte[] result = new byte[4];
+        for (int i = 3; i >= 0; --i) {
+            result[i] = (byte) (unsignedLong & 0xFFL);
+            unsignedLong >>= 8;
+        }
+        return result;
+    }
+
+    /**
+     * convert long to byte array in little-endian as 4 bytes unsigned long.
+     * so the number should be less than 4294967295 and positive
+     *
+     * @param unsignedLong [0, 4294967295]
+     * @return 4 Bytes length array
+     */
+    public static byte[] toByteArrayLE(long unsignedLong) {
+        if (unsignedLong < 0 || unsignedLong > 0xFFFFFFFFL) {
+            throw new IllegalArgumentException("the number " + unsignedLong + "is NOT in range [0, 4294967295]");
+        }
+        byte[] result = new byte[4];
+        for (int i = 0; i < 4; ++i) {
+            result[i] = (byte) (unsignedLong & 0xFFL);
+            unsignedLong >>= 8;
+        }
+        return result;
+    }
+
+    /**
+     * just a simple method to transform byte to hex
+     *
+     * @param b the byte
+     * @return a lower case hex string that without "0x"
+     */
+    public static String toHexString(byte b) {
+        char[] s = new char[2];
+        s[0] = HEXES.charAt((b & 0xF0) >> 4);
+        s[1] = HEXES.charAt((b & 0x0F));
+        return new String(s);
+    }
+
+    /**
+     * convert byte array to a long hex String
+     *
+     * @param bytes the byte array
+     * @return the hex String
+     */
+    public static String toHexString(byte[] bytes) {
+        int len = bytes.length;
+        StringBuilder sb = new StringBuilder(2 * len);
+        for (byte b : bytes) {
+            sb.append(HEXES.charAt((b & 0xF0) >> 4))
+              .append(HEXES.charAt(b & 0x0F));
+        }
+        return sb.toString();
+    }
+
+    /**
+     * parse hexString like "fe13012501fa2e003f01011d0900000056b9591f45" to byte[]
+     *
+     * @param hexString the hexString, should be valid
+     * @return the byte array
+     */
+    public static byte[] toByteArray(String hexString) {
+        if (null == hexString || hexString.isEmpty()) {
+            throw new IllegalArgumentException("do NOT use null or empty hexString to fool me!");
+        }
+        String str = hexString.trim().replace("0x", "").toLowerCase();
+        int len = str.length();
+        if (len % 2 != 0) {
+            throw new IllegalArgumentException("are you sure " + hexString + " is hexString?");
+        }
+        byte[] result = new byte[len / 2];
+        String cursor;
+        for (int i = 0; i < len; i += 2) {
+            cursor = str.substring(i, i + 2);
+            result[i / 2] = (byte) Integer.parseInt(cursor, 16);
+        }
+        return result;
+    }
+
     /**
      * 保留指定位数的小数，对小数部分向下取整丢弃多余部分
      *
